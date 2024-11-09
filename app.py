@@ -227,8 +227,8 @@ if st.button("Ver resultados Parciais"):
             total = st.session_state.cortinas[cortina]["total"]
             win_rate = st.session_state.cortinas[cortina]["win_rate"]
 
-            st.write(
-                f"{cortina.replace('_', ' ').title()}: {wins}/{total} - {win_rate}"
+            st.markdown(
+                f"[{cortina.replace('_', ' ').title()}](images/{cortina}.jpg): {wins}/{total} - {win_rate}"
             )
 
 col1, col2 = st.columns([1, 1])
