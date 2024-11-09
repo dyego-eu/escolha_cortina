@@ -97,6 +97,12 @@ def session_startup():
             "total": 0,
             "win_rate": 0,
         },
+        "marrom": {
+            "has_2": False,
+            "wins": 0,
+            "total": 0,
+            "win_rate": 0,
+        },
         "pastel_flores": {
             "has_2": False,
             "wins": 0,
@@ -152,6 +158,12 @@ def session_startup():
             "win_rate": 0,
         },
         "verde_com_detalhes": {
+            "has_2": False,
+            "wins": 0,
+            "total": 0,
+            "win_rate": 0,
+        },
+        "verde_clarinho": {
             "has_2": False,
             "wins": 0,
             "total": 0,
