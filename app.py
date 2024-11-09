@@ -1,6 +1,7 @@
 from pathlib import Path
 from PIL import Image
 import numpy as np
+import pandas as pd
 import streamlit as st
 
 
@@ -232,6 +233,13 @@ if st.button("Mostrar el top 5 cortinas"):
             f"{st.session_state.cortinas[cortina]['win_rate']:.2%}"
         )
         st.image(Image.open(images_folder / f"{cortina}.jpg"))
+
+    data = st.bar_chart(
+        pd.DataFrame(st.session_state.cortinas).T.drop(columns=["has_2"]),
+        x=None,
+        y="win_rate",
+        horizontal=True,
+    )
 
     if st.button("Volver a la comparacion"):
         st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
