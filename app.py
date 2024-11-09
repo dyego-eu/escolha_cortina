@@ -216,67 +216,73 @@ images_folder = Path("images")
 
 st.title("Escoja la mejor cortina")
 
-if st.button("Ver resultados Parciais"):
-    if not st.button("Esconder resultados Parciais"):
-        for cortina in sorted(
-            st.session_state.cortinas.keys(),
-            key=lambda x: st.session_state.cortinas[x]["win_rate"],
-            reverse=True,
-        ):
-            wins = st.session_state.cortinas[cortina]["wins"]
-            total = st.session_state.cortinas[cortina]["total"]
-            win_rate = st.session_state.cortinas[cortina]["win_rate"]
+if st.button("Mostrar el top 5 cortinas"):
 
-            st.markdown(
-                f"[{cortina.replace('_', ' ').title()}](images/{cortina}.jpg): {wins}/{total} - {win_rate}"
-            )
+    top_5 = sorted(
+        st.session_state.cortinas.keys(),
+        key=lambda x: st.session_state.cortinas[x]["win_rate"],
+        reverse=True,
+    )[:5]
+    for cortina in top_5:
+        st.subheader(f"{cortina.replace('_', ' ').title()}")
+        st.write(f"Vitorias: {st.session_state.cortinas[cortina]['wins']}")
+        st.write(f"Total de votos: {st.session_state.cortinas[cortina]['total']}")
+        st.write(
+            "Porcentaje de victorias: "
+            f"{st.session_state.cortinas[cortina]['win_rate']:.2%}"
+        )
+        st.image(Image.open(images_folder / f"{cortina}.jpg"))
 
-col1, col2 = st.columns([1, 1])
+    if st.button("Volver a la comparacion"):
+        st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
+            st.session_state.cortina_names, 2, replace=False
+        )
+        st.rerun()
 
-col1.header(cortina_1.replace("_", " ").title())
-col1.image(Image.open(images_folder / f"{cortina_1}.jpg"))
-if st.session_state.cortinas[cortina_1]["has_2"]:
-    col1.image(Image.open(images_folder / f"{cortina_1}_2.jpg"))
+else:
+    col1, col2 = st.columns([1, 1])
 
+    col1.header(cortina_1.replace("_", " ").title())
+    col1.image(Image.open(images_folder / f"{cortina_1}.jpg"))
+    if st.session_state.cortinas[cortina_1]["has_2"]:
+        col1.image(Image.open(images_folder / f"{cortina_1}_2.jpg"))
 
-col2.header(cortina_2.replace("_", " ").title())
-col2.image(Image.open(images_folder / f"{cortina_2}.jpg"))
-if st.session_state.cortinas[cortina_2]["has_2"]:
-    col2.image(Image.open(images_folder / f"{cortina_2}_2.jpg"))
+    col2.header(cortina_2.replace("_", " ").title())
+    col2.image(Image.open(images_folder / f"{cortina_2}.jpg"))
+    if st.session_state.cortinas[cortina_2]["has_2"]:
+        col2.image(Image.open(images_folder / f"{cortina_2}_2.jpg"))
 
+    if col1.button("Esa es la mejor", key="mejor-1"):
+        st.session_state.cortinas[cortina_1]["wins"] += 1
+        st.session_state.cortinas[cortina_1]["total"] += 1
+        st.session_state.cortinas[cortina_2]["total"] += 1
+        st.session_state.cortinas[cortina_2]["win_rate"] = (
+            st.session_state.cortinas[cortina_2]["wins"]
+            / st.session_state.cortinas[cortina_2]["total"]
+        )
+        st.session_state.cortinas[cortina_1]["win_rate"] = (
+            st.session_state.cortinas[cortina_1]["wins"]
+            / st.session_state.cortinas[cortina_1]["total"]
+        )
+        st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
+            st.session_state.cortina_names, 2, replace=False
+        )
+        st.rerun()
 
-if col1.button("Esa es la mejor", key="mejor-1"):
-    st.session_state.cortinas[cortina_1]["wins"] += 1
-    st.session_state.cortinas[cortina_1]["total"] += 1
-    st.session_state.cortinas[cortina_2]["total"] += 1
-    st.session_state.cortinas[cortina_2]["win_rate"] = (
-        st.session_state.cortinas[cortina_2]["wins"]
-        / st.session_state.cortinas[cortina_2]["total"]
-    )
-    st.session_state.cortinas[cortina_1]["win_rate"] = (
-        st.session_state.cortinas[cortina_1]["wins"]
-        / st.session_state.cortinas[cortina_1]["total"]
-    )
-    st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
-        st.session_state.cortina_names, 2, replace=False
-    )
-    st.rerun()
+    if col2.button("Esa es la mejor", key="mejor-2"):
+        st.session_state.cortinas[cortina_2]["wins"] += 1
+        st.session_state.cortinas[cortina_2]["total"] += 1
+        st.session_state.cortinas[cortina_1]["total"] += 1
 
-
-if col2.button("Esa es la mejor", key="mejor-2"):
-    st.session_state.cortinas[cortina_2]["wins"] += 1
-    st.session_state.cortinas[cortina_2]["total"] += 1
-    st.session_state.cortinas[cortina_1]["total"] += 1
-
-    st.session_state.cortinas[cortina_2]["win_rate"] = (
-        st.session_state.cortinas[cortina_2]["wins"]
-        / st.session_state.cortinas[cortina_2]["total"]
-    )
-    st.session_state.cortinas[cortina_1]["win_rate"] = (
-        st.session_state.cortinas[cortina_1]["wins"]
-        / st.session_state.cortinas[cortina_1]["total"]
-    )
-    st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
-        st.session_state.cortina_names, 2, replace=False
-    )
-    st.rerun()
+        st.session_state.cortinas[cortina_2]["win_rate"] = (
+            st.session_state.cortinas[cortina_2]["wins"]
+            / st.session_state.cortinas[cortina_2]["total"]
+        )
+        st.session_state.cortinas[cortina_1]["win_rate"] = (
+            st.session_state.cortinas[cortina_1]["wins"]
+            / st.session_state.cortinas[cortina_1]["total"]
+        )
+        st.session_state.cortina_1, st.session_state.cortina_2 = np.random.choice(
+            st.session_state.cortina_names, 2, replace=False
+        )
+        st.rerun()
