@@ -31,6 +31,12 @@ def session_startup():
             "total": 0,
             "win_rate": 0,
         },
+        "azul_bebe_flores": {
+            "has_2": False,
+            "wins": 0,
+            "total": 0,
+            "win_rate": 0,
+        },
         "azul_detalhes_dourados": {
             "has_2": False,
             "wins": 0,
